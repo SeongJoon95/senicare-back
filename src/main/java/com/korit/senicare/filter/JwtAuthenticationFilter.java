@@ -1,4 +1,4 @@
-package com.korit.sinecare.filter;
+package com.korit.senicare.filter;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.korit.sinecare.provider.JwtProvider;
+import com.korit.senicare.provider.JwtProvider;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

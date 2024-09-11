@@ -1,4 +1,4 @@
-package com.korit.sinecare.entity;
+package com.korit.senicare.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

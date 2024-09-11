@@ -1,4 +1,4 @@
-package com.korit.sinecare.provider;
+package com.korit.senicare.provider;
 
 import java.util.Date;
 import java.time.Instant;

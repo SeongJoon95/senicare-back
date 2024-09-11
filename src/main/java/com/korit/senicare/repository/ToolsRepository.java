@@ -1,9 +1,9 @@
-package com.korit.sinecare.repository;
+package com.korit.senicare.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.korit.sinecare.entity.ToolsEntity;
+import com.korit.senicare.entity.ToolsEntity;
 
 @Repository
 public interface ToolsRepository extends JpaRepository<ToolsEntity, Integer>{
