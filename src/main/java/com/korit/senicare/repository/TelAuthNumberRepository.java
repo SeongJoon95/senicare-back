@@ -9,4 +9,5 @@ import com.korit.senicare.entity.TelAuthNumberEntity;
 // JpaRepository<받을 class엔티티,pk타입>
 public interface TelAuthNumberRepository extends JpaRepository<TelAuthNumberEntity, String> {
     
+    boolean existsByTelNumberAndAuthNumber(String telNumber, String authNumber);
 }
