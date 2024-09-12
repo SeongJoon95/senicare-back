@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.korit.senicare.common.util.AuthNumberCreator;
 import com.korit.senicare.dto.request.auth.IdCheckRequestDto;
+import com.korit.senicare.dto.request.auth.SignInRequestDto;
 import com.korit.senicare.dto.request.auth.SignUpRequestDto;
 import com.korit.senicare.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.senicare.dto.request.auth.TelAuthRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
+import com.korit.senicare.dto.response.auth.SignInResponseDto;
 import com.korit.senicare.entity.NurseEntity;
 import com.korit.senicare.entity.TelAuthNumberEntity;
 import com.korit.senicare.provider.SmsProvider;
@@ -153,6 +155,26 @@ public class AuthServiceImplement implements AuthService{
         }
 
         return ResponseDto.success(); // 성공했을 경우 나타내는 메서드
+    }
+
+    // 로그인 관련 처리 메서드
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+        
+        // 아이디를 가져와서 담아준다.
+        String userId = dto.getUserId();
+
+        try {
+            
+            NurseEntity nurseEntity = nurseRepository.findByUserId(userId);
+            if (nurseEntity == null) return ResponseDto.signInFail(); // 존재하지 않는 아이디일 경우 나타내는 상태 메시지 
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
     }
 
 }

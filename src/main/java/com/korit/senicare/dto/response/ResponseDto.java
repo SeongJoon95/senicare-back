@@ -11,7 +11,7 @@ import lombok.Getter;
 // 미리 만들어두고 호출하기 위한 용도로 사용
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor // 모든 매개변수를 받아오는 생성자만 존재 / 매개변수를 받아오지 않는 생성자는 없음
 public class ResponseDto {
     
     private String code;
@@ -44,6 +44,12 @@ public class ResponseDto {
     // telAuthFail() : 전화 인증 실패 응답을 반환 (HTTP 401 Unauthorized)
     public static ResponseEntity<ResponseDto> telAuthFail() {
         ResponseDto responsBody = new ResponseDto(ResponseCode.TEL_AUTH_FAIL, ResponseMessage.TEL_AUTH_FAIL);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responsBody);
+    }
+    
+    // telAuthFail() : 로그인 실패 응답을 반환 (HTTP 401 Unauthorized)
+    public static ResponseEntity<ResponseDto> signInFail() {
+        ResponseDto responsBody = new ResponseDto(ResponseCode.SIGN_IN_FAIL, ResponseMessage.SIGN_IN_FAIL);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responsBody);
     }
 

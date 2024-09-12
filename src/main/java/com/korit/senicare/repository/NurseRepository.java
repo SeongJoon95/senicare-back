@@ -11,5 +11,8 @@ public interface NurseRepository extends JpaRepository<NurseEntity,String>{
     // userId가 존재하는지 아닌지 찾게됨
     boolean existsByUserId(String userId);
     boolean existsByTelNumber(String telNumber);
+
+    // 유저 아이디를 가지고 조회
+    NurseEntity findByUserId(String userId);
     
 }

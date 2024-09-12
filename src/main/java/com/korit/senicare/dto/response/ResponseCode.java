@@ -12,6 +12,7 @@ public interface ResponseCode {
     String DUPLICATED_TEL_NUMBER = "DT";
 
     String TEL_AUTH_FAIL = "TAF";
+    String SIGN_IN_FAIL="SF";// 401 error
 
     String MESSAGE_SEND_FAIL = "TF";
     String DATABASE_ERROR = "DBE";
