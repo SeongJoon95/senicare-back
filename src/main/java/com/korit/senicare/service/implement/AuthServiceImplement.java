@@ -15,6 +15,7 @@ import com.korit.senicare.dto.response.ResponseDto;
 import com.korit.senicare.dto.response.auth.SignInResponseDto;
 import com.korit.senicare.entity.NurseEntity;
 import com.korit.senicare.entity.TelAuthNumberEntity;
+import com.korit.senicare.provider.JwtProvider;
 import com.korit.senicare.provider.SmsProvider;
 import com.korit.senicare.repository.NurseRepository;
 import com.korit.senicare.repository.TelAuthNumberRepository;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthServiceImplement implements AuthService{
     
     private final SmsProvider smsProvider;
+    private final JwtProvider jwtProvider;
 
     private final NurseRepository nurseRepository;
     private final TelAuthNumberRepository telAuthNumberRepository;
@@ -80,7 +82,7 @@ public class AuthServiceImplement implements AuthService{
         // smsProvider.sendMessage : 인증번호를 SMS로 전송. 전송이 실패할 경우
         // ResponseDto.messageSendFail()를 반환
         boolean isSendSuccess = smsProvider.sendMessage(telNumber, authNumber);
-        if (!isSendSuccess) return ResponseDto.messageDendFail();
+        if (!isSendSuccess) return ResponseDto.messageSendFail();
 
         try {
             
@@ -163,18 +165,27 @@ public class AuthServiceImplement implements AuthService{
         
         // 아이디를 가져와서 담아준다.
         String userId = dto.getUserId();
+        String password = dto.getPassword();
+        String accessToken = null;
 
         try {
             
             NurseEntity nurseEntity = nurseRepository.findByUserId(userId);
             if (nurseEntity == null) return ResponseDto.signInFail(); // 존재하지 않는 아이디일 경우 나타내는 상태 메시지 
 
+            String encodedPassword = nurseEntity.getPassword();
+            boolean isMathced = passwordEncoder.matches(password, encodedPassword); // 비교 결과를 받을 변수 생성
+            if (!isMathced) return ResponseDto.signInFail(); // 로그인 실패일 경우 두개가 매치되지 않았다는 것에 대한 실패반환메서드 
+
+            accessToken = jwtProvider.create(userId);
+            if (accessToken == null) return ResponseDto.tokenCreateFail(); 
 
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
 
+        return SignInResponseDto.success(accessToken);
     }
 
 }

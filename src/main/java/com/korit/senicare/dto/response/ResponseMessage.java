@@ -12,8 +12,9 @@ public interface ResponseMessage {
 
     String TEL_AUTH_FAIL = "Tel number authentication failed.";
     String SIGN_IN_FAIL= "Sign in failed."; // 401 에러 [로그인실패]
-
+    
     String MESSAGE_SEND_FAIL = "Auth number send failed.";
+    String TOKEN_CREATE_FAIL = "Token creation failed.";
     String DATABASE_ERROR = "Database error.";
 
 } 

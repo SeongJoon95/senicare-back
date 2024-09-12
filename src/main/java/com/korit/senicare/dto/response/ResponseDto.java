@@ -54,8 +54,14 @@ public class ResponseDto {
     }
 
     // messageDendFail() : 메시지 전송 실패 응답을 반환 (HTTP 500 Internal Server Error)
-    public static ResponseEntity<ResponseDto> messageDendFail() {
+    public static ResponseEntity<ResponseDto> messageSendFail() {
     ResponseDto responseBody = new ResponseDto(ResponseCode.MESSAGE_SEND_FAIL, ResponseMessage.MESSAGE_SEND_FAIL);
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+    }
+
+    // messageDendFail() : 메시지 전송 실패 응답을 반환 (HTTP 500 Internal Server Error)
+    public static ResponseEntity<ResponseDto> tokenCreateFail() {
+    ResponseDto responseBody = new ResponseDto(ResponseCode.TOKEN_CREATE_FAIL, ResponseMessage.TOKEN_CREATE_FAIL);
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
     
