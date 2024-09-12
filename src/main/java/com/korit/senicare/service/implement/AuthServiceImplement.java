@@ -123,7 +123,7 @@ public class AuthServiceImplement implements AuthService{
 
     @Override
     // 회원가입 메서드
-    //  ResponseEntity : HTTP 요청에 대한 응답을 제어하는 데 사용하는 클래스 // 응답 데이터와 HTTP 상태 코드를 직접 제어할 수 있는 클래스
+    // ResponseEntity : HTTP 요청에 대한 응답을 제어하는 데 사용하는 클래스 // 응답 데이터와 HTTP 상태 코드를 직접 제어할 수 있는 클래스
     // ResponseDto 타입으로 반환처리를 해줌
     // 매개변수는 클라이언트로 부터 요청받은 값을 저장하고 있는 클래스(SignUpRequestDto)에서 받아옴
     public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto) {

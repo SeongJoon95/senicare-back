@@ -20,6 +20,7 @@ public class SignUpRequestDto {
     @Length(max=20)
     private String userId;
     @NotBlank
+    // regexp : 필드 값이 일치해야 하는 정규 표현식 패턴/ 이 속성은 필수로 설정해야 한다.
     @Pattern(regexp="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,13}$") // ^: 문자열의 시작 // $: 문자열의 끝
     private String password;
     @NotBlank
