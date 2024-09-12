@@ -1,13 +1,17 @@
 package com.korit.senicare.service.implement;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.korit.senicare.common.util.AuthNumberCreator;
 import com.korit.senicare.dto.request.auth.IdCheckRequestDto;
+import com.korit.senicare.dto.request.auth.SignUpRequestDto;
 import com.korit.senicare.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.senicare.dto.request.auth.TelAuthRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
+import com.korit.senicare.entity.NurseEntity;
 import com.korit.senicare.entity.TelAuthNumberEntity;
 import com.korit.senicare.provider.SmsProvider;
 import com.korit.senicare.repository.NurseRepository;
@@ -24,8 +28,11 @@ public class AuthServiceImplement implements AuthService{
 
     private final NurseRepository nurseRepository;
     private final TelAuthNumberRepository telAuthNumberRepository;
+// BCryptPasswordEncoder() 메서드를 통해 비밀번호 구현체를 만듦. // 비밀번호 암호화를 하기위한 변수 초기화
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
+    // 아이디 중복확인 작업 
     public ResponseEntity<ResponseDto> idCheck(IdCheckRequestDto dto) {
         
         String userId = dto.getUserId();
@@ -46,8 +53,8 @@ public class AuthServiceImplement implements AuthService{
         return ResponseDto.success();
     }
 
-    // 인증번호 관련 메서드
     @Override
+    // 인증번호 관련 메서드
     public ResponseEntity<ResponseDto> telAuth(TelAuthRequestDto dto) {
         
         String telNumber = dto.getTelNumber();
@@ -108,6 +115,44 @@ public class AuthServiceImplement implements AuthService{
         }
 
         return ResponseDto.success();
+    }
+
+    @Override
+    // 회원가입 메서드
+    //  ResponseEntity : HTTP 요청에 대한 응답을 제어하는 데 사용하는 클래스 // 응답 데이터와 HTTP 상태 코드를 직접 제어할 수 있는 클래스
+    // ResponseDto 타입으로 반환처리를 해줌
+    // 매개변수는 클라이언트로 부터 요청받은 값을 저장하고 있는 클래스(SignUpRequestDto)에서 받아옴
+    public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto) {
+
+        String userId = dto.getUserId(); // 클라이언트로부터 입력받은 userId를 문자열 타입 userId 변수에 값 저장
+        String telNumber = dto.getTelNumber(); // 요청받은 전화번호를 telNumber이라는 변수에 저장
+        String authNumber = dto.getAuthNumber(); // 요청받은 인증번호 'authNumber' 변수에 저장
+        String password = dto.getPassword();
+
+        try {
+            
+            boolean isExistedId = nurseRepository.existsByUserId(userId); // userId 가 있는지 조회해서 boolean타입 isExistedId에 저장
+            if (isExistedId) return ResponseDto.duplicatedUserId(); // 아이디가 존재하면 중복으로 인한 에러 발생메소드를 리턴한다.
+
+            boolean isExistedTelNumber = nurseRepository.existsByTelNumber(telNumber); // 변수로 받은 telNumber이라는 값이 존재하는지 비교
+            if (isExistedTelNumber) return ResponseDto.duplicatedTelNumber(); // 전화번호가 존재할 경우 존재하는 전화번호에 대한 에러 메소드 전송
+
+            boolean isMatched = telAuthNumberRepository.existsByTelNumberAndAuthNumber(telNumber, authNumber);
+            if (!isMatched) return ResponseDto.telAuthFail(); // 인증번호가 일치하지 않을경우 처리하는 telAuthFail 메서드 
+
+            String encodedPassword = passwordEncoder.encode(password);
+            dto.setPassword(encodedPassword); // dto에 있는 password를 갈아 끼워주는거임
+
+            // 
+            NurseEntity nurseEntity = new NurseEntity(dto); 
+            nurseRepository.save(nurseEntity); // 새로 받아온 값들을 넣어준뒤 저장해주는 역할
+
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외처리
+            return ResponseDto.databaseError(); // 이작업에 예외처리는 데이터베이스에 대한 에러말곤 없어서 이 메소드만 작성
+        }
+
+        return ResponseDto.success(); // 성공했을 경우 나타내는 메서드
     }
 
 }
