@@ -15,6 +15,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.korit.senicare.filter.JwtAuthenticationFilter;
+import com.korit.senicare.handler.OAuth2SuccessHandler;
+import com.korit.senicare.service.implement.OAuth2UserServiceImplement;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,9 +27,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor // final로 선언된 필드를 자동으로 생성자를 통해 주입받고록 함. [JwtAuthenticationFilter가 주입된다.]
 public class WebSecurityConfig {
     
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
     // HTTP 요청이 서버로 들어올때 JWT 토큰을 검증하는데 사용 (JWT 기반 인증 필터)
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    
+    private final OAuth2UserServiceImplement oAuth2Serviec;
+
     @Bean
     // Spring Security의 보안 설정을 직접 지정 -> HTTP 요청에 대한 보안 정책을 지정
     protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
@@ -47,8 +51,15 @@ public class WebSecurityConfig {
             // URL 패턴 및 HTTP 메서드에 따라 인증 및 인가 여부 지정 [특정 URL 인증 예외 처리]
             .authorizeHttpRequests(request -> request
                 // '/api/v1/auth/**/' 이랑 '/' 을 제외한 모든 요청은 인증을 필요로 함
-                .requestMatchers("/api/v1/auth/**", "/").permitAll()
+                .requestMatchers("/api/v1/auth/**", "/oauth2/callback/*", "/").permitAll()
                 .anyRequest().authenticated()
+            )
+            // oAuth2 로그인 적용
+            .oauth2Login(oauth2 -> oauth2
+                .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+                .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/sns-sign-in"))
+                .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2Serviec))
+                .successHandler(oAuth2SuccessHandler)
             )
             // 필터 등록
             // jwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 앞에 배치하여 JWT 토큰을 검증하는 필터를 등록
