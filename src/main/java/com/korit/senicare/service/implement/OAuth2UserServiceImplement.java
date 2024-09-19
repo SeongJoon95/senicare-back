@@ -70,6 +70,7 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
             attributes.put("accessToken", token);
             
             customOAuth2User = new CustomOAuth2User(userId, attributes, true);
+            // d
         }
 
         return customOAuth2User;
