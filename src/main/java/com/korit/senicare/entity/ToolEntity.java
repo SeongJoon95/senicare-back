@@ -1,5 +1,7 @@
 package com.korit.senicare.entity;
 
+import com.korit.senicare.dto.request.tool.PostToolRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity(name="tools")
 @Table(name="tools")
-public class ToolsEntity {
+public class ToolEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // -> 데이터 베이스 PK의 AI와 동일
@@ -24,4 +26,11 @@ public class ToolsEntity {
     private String name;
     private String purpose;
     private String count;
+
+    public ToolEntity(PostToolRequestDto dto) {
+        this.name = dto.getName();
+        this.purpose = dto.getPurpose();
+        this.count = dto.getCount();
+    }
 }
+
