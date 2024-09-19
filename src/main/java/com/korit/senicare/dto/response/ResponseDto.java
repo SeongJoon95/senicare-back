@@ -40,6 +40,11 @@ public class ResponseDto {
         ResponseDto responsBody = new ResponseDto(ResponseCode.DUPLICATED_TEL_NUMBER, ResponseMessage.DUPLICATED_TEL_NUMBER);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
     }
+    // noExistUserId() : 아이디가 없을 경우 (HTTP 400 Bad Request)
+    public static ResponseEntity<ResponseDto> noExistUserId() {
+        ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_USER_ID, ResponseMessage.NO_EXIST_USER_ID);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+    }
     
     // telAuthFail() : 전화 인증 실패 응답을 반환 (HTTP 401 Unauthorized)
     public static ResponseEntity<ResponseDto> telAuthFail() {
