@@ -12,6 +12,7 @@ public interface ResponseMessage {
     String DUPLICATED_USER_ID = "Duplicated user id.";
     String DUPLICATED_TEL_NUMBER = "Duplicated user tel number.";
     String NO_EXIST_USER_ID = "No exist user id";
+    String NO_EXIST_TOOL = "No exist tool.";
 
     // 401 Error [로그인실패]
     String TEL_AUTH_FAIL = "Tel number authentication failed.";

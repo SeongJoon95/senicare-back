@@ -3,13 +3,13 @@ package com.korit.senicare.dto.request.tool;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostToolRequestDto {
+public class PatchToolRequestDto {
     
     @NotBlank
     private String name;

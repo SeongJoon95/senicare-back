@@ -46,6 +46,12 @@ public class ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
     }
     
+    // noExistTool() : 없는 용품일 경우 (HTTP 400 Bad Request)
+    public static ResponseEntity<ResponseDto> noExistTool() {
+        ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_TOOL, ResponseMessage.NO_EXIST_TOOL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+    }
+    
     // telAuthFail() : 전화 인증 실패 응답을 반환 (HTTP 401 Unauthorized)
     public static ResponseEntity<ResponseDto> telAuthFail() {
         ResponseDto responsBody = new ResponseDto(ResponseCode.TEL_AUTH_FAIL, ResponseMessage.TEL_AUTH_FAIL);
