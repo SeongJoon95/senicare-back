@@ -10,13 +10,13 @@ import lombok.Getter;
 public class Tool {
     private Integer toolNumber;
     private String name;
-    private String purpore;
+    private String purpose;
     private Integer count;
 
     private Tool(ToolEntity toolEntity) {
         this.toolNumber = toolEntity.getToolNumber();
         this.name = toolEntity.getName();
-        this.purpore = toolEntity.getPurpose();
+        this.purpose = toolEntity.getPurpose();
         this.count = toolEntity.getCount();
     }
 
