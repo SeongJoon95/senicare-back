@@ -59,8 +59,8 @@ public class WebSecurityConfig {
             .cors(cors -> cors.configurationSource(configurationSource()))
             // URL 패턴 및 HTTP 메서드에 따라 인증 및 인가 여부 지정 [특정 URL 인증 예외 처리]
             .authorizeHttpRequests(request -> request
-                // '/api/v1/auth/**/' 이랑 '/' 을 제외한 모든 요청은 인증을 필요로 함
-                .requestMatchers("/api/v1/auth/**", "/oauth2/callback/*", "/").permitAll()
+                // '/api/v1/auth/**/' 이랑 file업로드에 관련된 '/file/*' 와 '/' 을 제외한 모든 요청은 인증을 필요로 함
+                .requestMatchers("/api/v1/auth/**", "/oauth2/callback/*", "/file/*", "/").permitAll()
                 .anyRequest().authenticated()
             )
             // 인증 및 인가 작업중 발생하는 예외 처리
