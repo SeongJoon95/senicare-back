@@ -51,6 +51,17 @@ public class ResponseDto {
         ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_TOOL, ResponseMessage.NO_EXIST_TOOL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
     }
+    // noExistCustomer() : 없는 고객일 경우 (HTTP 400 Bad Request)
+    public static ResponseEntity<ResponseDto> noExistCustomer() {
+        ResponseDto responsBody = new ResponseDto(ResponseCode.NO_EXIST_CUSTOMER, ResponseMessage.NO_EXIST_CUSTOMER);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+    }
+    
+        // toolInsufficient() : 없는 용품일 경우 (HTTP 400 Bad Request)
+    public static ResponseEntity<ResponseDto> toolInsufficient() {
+        ResponseDto responsBody = new ResponseDto(ResponseCode.TOOL_INSUFFICIENT, ResponseMessage.TOOL_INSUFFICIENT);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responsBody);
+    }
     
     // telAuthFail() : 전화 인증 실패 응답을 반환 (HTTP 401 Unauthorized)
     public static ResponseEntity<ResponseDto> telAuthFail() {
@@ -62,6 +73,12 @@ public class ResponseDto {
     public static ResponseEntity<ResponseDto> signInFail() {
         ResponseDto responsBody = new ResponseDto(ResponseCode.SIGN_IN_FAIL, ResponseMessage.SIGN_IN_FAIL);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responsBody);
+    }
+    
+    // noPermission() : 사용자권한에 관련된 응답 반환 (HTTP 403 Unauthorized)
+    public static ResponseEntity<ResponseDto> noPermission() {
+        ResponseDto responsBody = new ResponseDto(ResponseCode.No_PERMISSION, ResponseMessage.No_PERMISSION);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responsBody);
     }
 
     // messageDendFail() : 메시지 전송 실패 응답을 반환 (HTTP 500 Internal Server Error)

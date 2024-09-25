@@ -14,11 +14,16 @@ public interface ResponseCode {
     String DUPLICATED_TEL_NUMBER = "DT";
     String NO_EXIST_USER_ID = "NI";
     String NO_EXIST_TOOL = "NT";
+    String NO_EXIST_CUSTOMER = "NC";
+    String TOOL_INSUFFICIENT = "TI";
 
     // 401 Error
     String TEL_AUTH_FAIL = "TAF";
     String SIGN_IN_FAIL="SF"; 
     String AUTHENTICATION_FAIL = "AF";
+
+    // 403 Error 권한없음
+    String No_PERMISSION = "NP";
 
     // 500 Error
     String MESSAGE_SEND_FAIL = "TF";

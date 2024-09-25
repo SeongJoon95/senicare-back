@@ -1,5 +1,10 @@
 package com.korit.senicare.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.korit.senicare.dto.request.customer.PostCareRecordRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,11 +26,28 @@ public class CareRecordEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer recordNumber;
-    
     private String recordDate;
     private String contents;
     private String usedToolName;
     private Integer count;
     private String charger;
-    private Integer customNumber;
+    private Integer customerNumber;
+
+    public CareRecordEntity(
+        PostCareRecordRequestDto dto,
+        String usedToolName,
+        String charger,
+        Integer customerNumber
+    ) {
+        Date now = new Date(); // 현재 시간에 대한 데이터(날짜) 객체
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String recordDate = simpleDateFormat.format(now);
+
+        this.recordDate = recordDate;
+        this.contents = dto.getContents();
+        this.usedToolName = usedToolName;
+        this.count = dto.getCount();
+        this.charger = charger;
+        this.customerNumber = customerNumber;
+    }
 }
