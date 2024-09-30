@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.korit.senicare.dto.request.nurse.PatchNurseRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
+import com.korit.senicare.dto.response.nurse.GetChargedCustomerResponseDto;
 import com.korit.senicare.dto.response.nurse.GetNurseListResponseDto;
 import com.korit.senicare.dto.response.nurse.GetNurseResponseDto;
 import com.korit.senicare.dto.response.nurse.GetSignInResponseDto;
+import com.korit.senicare.entity.CustomerEntity;
 import com.korit.senicare.entity.NurseEntity;
+import com.korit.senicare.repository.CustomerRepository;
 import com.korit.senicare.repository.NurseRepository;
 import com.korit.senicare.service.NurseService;
 
@@ -21,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class NurseServiceImplement implements NurseService {
 
     private final NurseRepository nurseRepository;
+    private final CustomerRepository customerRepository;
 
     @Override
     public ResponseEntity<? super GetSignInResponseDto> getSignIn(String userId) {
@@ -75,5 +80,44 @@ public class NurseServiceImplement implements NurseService {
 
         return GetNurseResponseDto.success(nurseEntity);
     }
-    
+
+    // 요양자 정보 수정관련 메서드
+    @Override
+    public ResponseEntity<ResponseDto> patchNurse(PatchNurseRequestDto dto, String userId) {
+        
+        try {
+            
+            String name = dto.getName();
+
+            NurseEntity nurseEntity = nurseRepository.findByUserId(userId);
+            if(nurseEntity == null) return ResponseDto.noExistUserId();
+            nurseEntity.setName(name);
+
+            nurseRepository.save(nurseEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetChargedCustomerResponseDto> getChargedCustomer(String nurseId) {
+        
+        List<CustomerEntity> customersEntities = new ArrayList<>(); 
+
+        try {
+            
+            customersEntities = customerRepository.findByCharger(nurseId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetChargedCustomerResponseDto.success(customersEntities);
+    }
+
 }
