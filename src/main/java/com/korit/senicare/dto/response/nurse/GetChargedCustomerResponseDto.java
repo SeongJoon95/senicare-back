@@ -16,11 +16,11 @@ import lombok.Getter;
 @Getter
 public class GetChargedCustomerResponseDto extends ResponseDto {
     
-    private List<ChargedCustomer> customer;
+    private List<ChargedCustomer> customers;
 
     private GetChargedCustomerResponseDto(List<CustomerEntity> customerEntities) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.customer = ChargedCustomer.getList(customerEntities);
+        this.customers = ChargedCustomer.getList(customerEntities);
     }
 
     public static ResponseEntity<GetChargedCustomerResponseDto> success(List<CustomerEntity> customerEntities) {
