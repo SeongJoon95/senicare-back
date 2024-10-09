@@ -66,6 +66,7 @@ public class AuthController {
         return response;
     }
 
+    // 로그인 관련 메서드
     @PostMapping("/sign-in")
     public ResponseEntity<? super SignInResponseDto> signIn(
         @RequestBody @Valid SignInRequestDto requestBody
